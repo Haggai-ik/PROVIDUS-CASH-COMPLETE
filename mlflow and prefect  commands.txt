@@ -1,0 +1,44 @@
+pip install mlflow.
+
+command to create a backend sevrer to store model artifacts
+mlflow server --backend-store-uri sqlite:///backend.db --default-artifact-root  ./artifacts.local
+
+
+command to set mlflow tracking uri
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
+
+
+launching ui to backend server.
+mlflow ui --backend-store-uri sqlite:///mlflow.db
+
+command to create first experiment to run mlflow experiment
+mlflow.set_experiment("my-experiment")
+
+command to set mlflow tracking uri
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
+
+
+PREFECT 
+
+
+pip install prefect 
+
+command to run prefect ui
+prefect orion start 
+
+command to create a deployment
+prefect deployment build training.py:final_execute -n model_training -t production2
+
+commmand to apply the deployment
+prefect deployment apply final_execute-deployment.yaml
+
+command to start agent to execute prefect flows
+prefect agent start -t production
+
+
+
+
+
+
+
+

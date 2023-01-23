@@ -1,0 +1,27 @@
+
+create or alter procedure final_insert 
+
+as
+	insert into [CASH_MGMT].[vault_balance_predict_table]
+	select b.REFERENCE_DATE,
+	   b.FORECAST_DATE,
+	  b.Branch_code,
+	   a.TRAN_CRNCY_CODE,
+	   a.Target_Credit,
+	   b.Target_Debit,
+	   c._AVAIL_BAL  VAULT_BALANCE,
+	   a.DEP_FORECAST DEPOSIT_PREDICTION,
+	   b.WITH_FORECAST WITHDRAWAL_PREDICTION,
+	   (c._AVAIL_BAL+a.DEP_FORECAST-b.WITH_FORECAST) PREDICT_VAUILT_BAL,
+	   b.DAY_MONTH,b.MONTH MONTH,b.PREPUBHOL
+	   from [CASH_MGMT].[DEPOSIT_PREDICTION_TABLE] a
+	   inner join [CASH_MGMT].[WITHDRAWAL_PREDICTION_TABLE] b on a.REFERENCE_DATE= b.REFERENCE_DATE
+	   inner join [CASH_MGMT].[VAULT_BALANCE] c on  a.REFERENCE_DATE =c.BANK_DATE 
+	   where a.Branch_code =b.Branch_code and a.TRAN_CRNCY_CODE=b.TRAN_CRNCY_CODE 
+	   and a.Branch_code=c.BRA_CODE and a.TRAN_CRNCY_CODE=c.CUR_CODE
+
+	truncate table [CASH_MGMT].[DEPOSIT_PREDICTION_TABLE]
+	truncate table [CASH_MGMT].[WITHDRAWAL_PREDICTION_TABLE]
+
+
+exec final_insert
